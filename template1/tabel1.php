@@ -1,22 +1,9 @@
-<?php
-$name = '';
-$email = '';
-$website = '';
-$comment = '';
-$gender = '';
-if(!empty($_POST)) 
-{
-$name = $_POST['name']; 
-$email = $_POST['email']; 
-$website = $_POST['website']; 
-$comment = $_POST['comment']; 
-$gender = $_POST['gender'];
-}
-?>
+
 <!DOCTYPE HTML>  
 <html>
 <head>
   <link rel="stylesheet" href="css.css">
+  <link rel="stylesheet" href="cssform.css">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 .error {color: #FF0000;}
@@ -54,19 +41,43 @@ th, td {
 </div>
 <div style="overflow-x:auto;">
 <table>
-  <tr>
-  <th>Nama</th>
-<th>Birth Date</th>
-  <th>Age</th>
+  <thead>
+    <tr>
+    <th>Nama</th>
+    <th>Birth Date</th>
+    <th>Age</th>
     <th>Adress</th>
-     <th>Gender</th>
-  </tr>
-  <tr>
-    <td><?php echo $name ; ?></td>
-   <td><?php echo $email ; ?></td>
-   <td><?php echo $website ; ?></td>
-   <td><?php echo $comment ; ?></td>
-   <td><?php echo $gender ; ?></td>
-  </tr>
+    <th>Gender</th>
+    <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="data-output">
+                    <?php
+                        //fetch data from json
+                        $data = file_get_contents('data.txt');
+                        //decode into php array
+                        $data = json_decode($data);
+ 
+                        $index = 0;
+                        foreach($data as $row){
+                            echo "
+                                <tr>
+                                    <td>".$row->name."</td>
+                                    <td>".$row->email."</td>
+                                    <td>".$row->website."</td>
+                                    <td>".$row->comment."</td>
+                                    <td>".$row->gender."</td>
+                                    <td>
+                                        <a href='edit.php?index=".$index."' class='edit'>Edit</a>
+                                        <a href='delete.php?index=".$index."' class='delete'>Delete</a>
+                                    </td>
+                                </tr>
+                            ";
+ 
+                            $index++;
+                        }
+                    ?>
+
+  </tbody>
 </table>
 </div>
